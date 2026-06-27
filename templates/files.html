@@ -1,46 +1,41 @@
-<!DOCTYPE html>
-<html lang="ru">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/color-scheme.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/files/files.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/files/files_mobile.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='icons/1941.ico') }}" type="image/x-icon">
-    <title>1941 Files</title>
-</head>
-
-<body>
-    <div class="wrapper">
-        <header>
-            <img src="/static/icons/logo.ico" class="icon_1941">
-            <div class="title_1941">1941 Files</div>
-        </header>
-        <div class="main_container">
-            <div class="dropxout" id="dropArea">Drag and drop the file or click</div>
-            <input type="file" id="fileInput" style="display: none;">
-            <div class="files_container">
-                {% for file in files %}
-                <div class="files_buttons_container">
-                    <button class="file-button" data-url="{{ url_for('serve_file', filename=file) }}">
-                        {{ file }}
-                    </button>
-                    <span class="copy-btn" data-filename="{{ file }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24">
-                            <path
-                                d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
-                        </svg>
-                    </span>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div id="progress-container">
-            <div id="progress-bar">0%</div>
-        </div>
-    </div>
-    <script src="{{ url_for('static', filename='js/files/script.js') }}"></script>
-</body>
-
-</html>
+{{ define "lang" }}ru{{ end }} {{ define "title" }}1941 Files Go{{ end }} {{
+define "styles" }}
+<link rel="stylesheet" href="/static/css/files/files.css" />
+<link rel="stylesheet" href="/static/css/files/files_mobile.css" />
+{{ end }} {{ define "content" }}
+<div class="main_container">
+	<div class="dropxout" id="dropArea">Drag and drop the file or click</div>
+	<input type="file" id="fileInput" />
+	<input type="hidden" id="csrfToken" value="{{ .CSRF }}" />
+	<div class="files_container">
+		{{ range .Files }}
+		<div class="files_buttons_container">
+			<button class="file-button" data-url="/{{ . }}">{{ . }}</button>
+			<span class="copy-btn" data-filename="{{ . }}">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="20"
+					height="20"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<rect x="9" y="9" width="13" height="13" rx="3" ry="3" />
+					<path
+						d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+					/>
+				</svg>
+			</span>
+		</div>
+		{{ end }}
+	</div>
+</div>
+<div id="progress-container">
+	<div id="progress-bar">0%</div>
+</div>
+{{ end }} {{ define "scripts" }}
+<script src="/static/js/files/script.js"></script>
+{{ end }}

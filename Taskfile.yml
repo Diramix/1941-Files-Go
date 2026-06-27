@@ -1,0 +1,74 @@
+version: "3"
+
+vars:
+    BINARY: 1941-files
+    DIST: dist
+    VERSION:
+        sh: git describe --tags --always --dirty 2>/dev/null || echo dev
+    LDFLAGS: -s -w -X main.version={{.VERSION}}
+
+tasks:
+    run:
+        desc: Run the server (go run .)
+        cmds:
+            - go run -ldflags "{{.LDFLAGS}}" .
+
+    build:
+        desc: Build release archives for Windows (.zip) and Linux (.tar.gz) into dist/
+        cmds:
+            - task: build-windows
+            - task: build-linux
+
+    cross:
+        desc: Alias for build (release archives for Windows and Linux)
+        cmds:
+            - task: build
+
+    build-windows:
+        desc: Build the Windows release archive (dist/{{.BINARY}}-{{.VERSION}}-windows-amd64.zip)
+        vars:
+            NAME: "{{.BINARY}}-{{.VERSION}}-windows-amd64"
+            STAGE: "{{.DIST}}/{{.BINARY}}-{{.VERSION}}-windows-amd64"
+        cmds:
+            - rm -rf {{.STAGE}}
+            - mkdir -p {{.STAGE}}
+            - GOOS=windows GOARCH=amd64 go build -ldflags "{{.LDFLAGS}}" -o {{.STAGE}}/{{.BINARY}}.exe .
+            - cp -r control {{.STAGE}}/control
+            - rm -f {{.STAGE}}/control/secret.key
+            - cd {{.DIST}} && zip -r {{.NAME}}.zip {{.NAME}}
+            - rm -rf {{.STAGE}}
+
+    build-linux:
+        desc: Build the Linux release archive (dist/{{.BINARY}}-{{.VERSION}}-linux-amd64.tar.gz)
+        vars:
+            NAME: "{{.BINARY}}-{{.VERSION}}-linux-amd64"
+            STAGE: "{{.DIST}}/{{.BINARY}}-{{.VERSION}}-linux-amd64"
+        cmds:
+            - rm -rf {{.STAGE}}
+            - mkdir -p {{.STAGE}}
+            - GOOS=linux GOARCH=amd64 go build -ldflags "{{.LDFLAGS}}" -o {{.STAGE}}/{{.BINARY}} .
+            - cp -r control {{.STAGE}}/control
+            - rm -f {{.STAGE}}/control/secret.key
+            - cd {{.DIST}} && tar -czf {{.NAME}}.tar.gz {{.NAME}}
+            - rm -rf {{.STAGE}}
+
+    fmt:
+        desc: Format the code
+        cmds:
+            - gofmt -w .
+
+    vet:
+        desc: Static analysis
+        cmds:
+            - go vet ./...
+
+    hashpw:
+        desc: "Generate a bcrypt password hash: task hashpw -- my-password"
+        cmds:
+            - go run ./cmd/hashpw {{.CLI_ARGS}}
+
+    clean:
+        desc: Remove the binary and dist/
+        cmds:
+            - rm -f {{.BINARY}}
+            - rm -rf {{.DIST}}

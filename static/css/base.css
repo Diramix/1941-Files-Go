@@ -1,0 +1,79 @@
+/* Shared base: global font, reset and the common header (used on every page). */
+* {
+  box-sizing: border-box;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--main-background);
+}
+
+body > .wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 10px;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 60px;
+  font-size: 35px;
+  color: var(--text-primary);
+  background-color: var(--light-element);
+  border-radius: 16px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+
+.icon_1941 {
+  position: absolute;
+  left: 7px;
+  height: 50px;
+}
+
+@media (prefers-color-scheme: light) {
+  .icon_1941 {
+    filter: invert(1);
+  }
+}
+.title_1941_Wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.title_1941 {
+  font-family: "Audiowide", sans-serif;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.title_1941_Go {
+  font-family: "Audiowide", sans-serif;
+  font-weight: 400;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  font-size: 0.55em;
+  line-height: 1;
+  color: var(--accent);
+  transform: rotate(5deg);
+}
+
+.version_1941 {
+  position: absolute;
+  right: 12px;
+  bottom: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+}

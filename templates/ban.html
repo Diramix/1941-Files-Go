@@ -1,24 +1,11 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/color-scheme.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/ban/ban.css') }}">
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/ban/ban_mobile.css') }}"> -->
-    <link rel="icon" href="{{ url_for('static', filename='icons/1941.ico') }}" type="image/x-icon">
-    <title>Access Denied</title>
-</head>
-
-<body>
-    <div class="wrapper">
-        <header>
-            <img src="/static/icons/logo.ico" class="icon_1941">
-            <div class="title_1941">Ban</div>
-        </header>
-        <div class="ban_gif_container">
-            <div class="ban_gif"></div>
-        </div>
-    </div>
-</body>
-
-</html>
+{{ define "title" }}Access Denied{{ end }}
+{{ define "styles" }}
+	<link rel="stylesheet" href="/static/css/ban/ban.css" />
+	<!-- <link rel="stylesheet" href="/static/css/ban/ban_mobile.css" /> -->
+{{ end }}
+{{ define "headerTitle" }}<div class="title_1941">Ban</div>{{ end }}
+{{ define "content" }}
+<div class="ban_gif_container">
+	<div class="ban_gif"></div>
+</div>
+{{ end }}

@@ -1,6 +1,9 @@
 const dropArea = document.getElementById('dropArea');
 const fileInput = document.getElementById('fileInput');
 const progressBar = document.getElementById('progress-bar');
+const progressContainer = document.getElementById('progress-container');
+progressBar.textContent = '';
+progressContainer.dataset.progress = '0%';
 
 dropArea.addEventListener('click', () => fileInput.click());
 
@@ -27,9 +30,17 @@ fileInput.addEventListener('change', () => {
     }
 });
 
+function setProgressText(text) {
+    progressContainer.dataset.progress = text;
+}
+
 function uploadFile(file) {
     const formData = new FormData();
     formData.append('file', file);
+    const csrfEl = document.getElementById('csrfToken');
+    if (csrfEl) {
+        formData.append('csrf_token', csrfEl.value);
+    }
 
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/upload', true);
@@ -38,21 +49,21 @@ function uploadFile(file) {
         if (e.lengthComputable) {
             const percent = Math.round((e.loaded / e.total) * 100);
             progressBar.style.width = percent + '%';
-            progressBar.textContent = percent + '%';
+            setProgressText(percent + '%');
         }
     };
 
     xhr.onload = function () {
         if (xhr.status === 200) {
-            progressBar.textContent = 'Done';
+            setProgressText('Done');
             setTimeout(() => location.reload(), 1000);
         } else {
-            progressBar.textContent = 'Error';
+            setProgressText('Error');
         }
     };
 
     xhr.onerror = function () {
-        progressBar.textContent = 'Error';
+        setProgressText('Error');
     };
 
     xhr.send(formData);
@@ -65,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const filename = button.getAttribute('data-filename');
             const url = origin + '/' + filename;
 
-            // Создаем временный элемент для копирования
+            // Create a temporary element for copying
             const textArea = document.createElement('textarea');
             textArea.value = url;
             document.body.appendChild(textArea);

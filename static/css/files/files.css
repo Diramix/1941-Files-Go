@@ -1,180 +1,182 @@
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    height: 100dvh;
-    overflow: hidden;
-    font-family: 'Noto Sans', sans-serif;
-    background-color: var(--main-background);
-}
-
-body>.wrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    height: 60px;
-    font-size: 35px;
-    font-weight: 800;
-    color: #fff;
-    background-color: var(--light-element);
-    border-radius: 0 0 10px 10px;
-    flex-shrink: 0;
-}
-
-.icon_1941 {
-    position: absolute;
-    left: 7px;
-    height: 50px;
-}
-
 .main_container {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    gap: 10px;
-    padding: 20px;
-    overflow: hidden;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: 10px;
+  padding: 20px 10px;
+  overflow: hidden;
 }
 
 .dropxout {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 20%;
-    height: 100%;
-    background-color: var(--dropxout);
-    color: #fff;
-    border: 5px dashed #fff5;
-    border-radius: 10px;
-    text-align: center;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-    flex-shrink: 0;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  height: 100%;
+  background-color: var(--dropxout);
+  color: var(--text-primary);
+  border: 5px dashed var(--border);
+  border-radius: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .dropxout:hover {
-    background-color: var(--light-element);
+  background-color: var(--light-element);
 }
 
 .dropxout.dragover {
-    border-color: #fff;
-    background-color: var(--light-element);
+  border-color: #fff;
+  background-color: var(--light-element);
 }
 
 .files_container {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    background-color: var(--light-element);
-    border: 1px solid #363944;
-    border-radius: 10px;
-    padding: 10px;
-    overflow-y: auto;
-    gap: 5px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: var(--light-element);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 10px;
+  overflow-y: auto;
+  gap: 8px;
 }
 
 .files_container * {
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .files_container::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 .files_container::-webkit-scrollbar-thumb {
-    background-color: var(--progress-bar);
-    border-radius: 4px;
+  background-color: var(--accent);
+  border-radius: 4px;
 }
 
 .files_container::-webkit-scrollbar-thumb:hover {
-    filter: brightness(0.8);
+  filter: brightness(0.8);
 }
 
 .files_buttons_container {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 }
 
 .file-button {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    min-height: 50px;
-    padding-right: 10px;
-    background-color: var(--button-bg);
-    color: #fff;
-    font-size: 20px;
-    font-weight: 600;
-    border-radius: 10px;
-    list-style: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: solid 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  min-height: 50px;
+  padding-right: 10px;
+  background-color: var(--button-bg);
+  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 16px;
+  list-style: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border: solid 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  border: 1px solid var(--border);
 }
 
 .file-button:hover {
-    background-color: #3261E2;
+  background-color: var(--accent);
+  color: var(--text-on-accent);
 }
 
 .copy-btn {
-    display: flex;
-    width: 50px;
-    height: 50px;
-    background-color: var(--button-bg);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  background-color: var(--button-bg);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 16px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.copy-btn svg {
+  stroke: currentColor;
+  transition: stroke 0.3s ease;
 }
 
 .copy-btn:hover {
-    background-color: #3261E2;
+  background-color: var(--accent);
+  color: var(--text-on-accent);
+}
+
+.copy-btn:hover svg {
+  stroke: var(--text-on-accent);
 }
 
 .copy-btn.copied {
-    background-color: green !important;
+  background-color: #22c55e !important;
+}
+
+.copy-btn.copied > svg {
+  stroke: var(--text-on-accent) !important;
 }
 
 #progress-container {
-    width: 100%;
-    height: 24px;
-    background-color: var(--light-element);
+  position: relative;
+  width: 100%;
+  height: 24px;
+  background-color: var(--light-element);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+#progress-container::after {
+  content: attr(data-progress);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  mix-blend-mode: difference;
+  backdrop-filter: invert(100%);
+  -webkit-backdrop-filter: invert(100%);
+  pointer-events: none;
 }
 
 #progress-bar {
-    width: 0;
-    height: 100%;
-    background-color: var(--progress-bar);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--light-element);
-    font-size: 14px;
+  width: 0;
+  height: 100%;
+  background-color: var(--accent);
+  border-radius: 100px;
+  transition: width 0.2s ease;
+}
+
+#fileInput {
+  display: none;
 }

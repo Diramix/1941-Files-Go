@@ -1,1 +1,8 @@
 /assets
+/.venv
+__pycache__/
+
+dist/
+
+# Runtime secret (auto-generated)
+/control/secret.key

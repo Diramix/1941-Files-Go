@@ -1,10 +1,10 @@
 {
-    "admin": {
-        "password": "admin",
-        "ban": false
-    },
-    "ban": {
-        "password": "ban",
-        "ban": true
-    }
+	"admin": {
+		"password": "admin",
+		"ban": false
+	},
+	"ban": {
+		"password": "ban",
+		"ban": true
+	}
 }

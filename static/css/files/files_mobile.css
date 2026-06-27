@@ -1,15 +1,14 @@
 @media screen and (max-width: 768px) {
-    .main_container {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 10px !important;
-        height: calc(100vh - 161px) !important;
-        padding: 20px 15px !important;
-    }
-
-    .dropxout {
-        height: 100px !important;
-        min-height: 100px !important;
-        width: 100% !important;
-    }
+  .main_container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    height: calc(100vh - 161px) !important;
+    padding: 20px 5px !important;
+  }
+  .dropxout {
+    height: 100px !important;
+    min-height: 100px !important;
+    width: 100% !important;
+  }
 }

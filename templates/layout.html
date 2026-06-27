@@ -1,0 +1,32 @@
+{{ define "layout" }}
+<!DOCTYPE html>
+<html lang="{{ block "lang" . }}en{{ end }}">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/static/css/color-scheme.css" />
+		<link rel="stylesheet" href="/static/css/fonts.css" />
+		<link rel="stylesheet" href="/static/css/base.css" />
+		{{ block "styles" . }}{{ end }}
+		<link rel="icon" href="/static/icons/1941.ico" type="image/x-icon" />
+		<title>{{ block "title" . }}1941 Files{{ end }}</title>
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<header>
+				<img src="/static/icons/logo.ico" class="icon_1941" />
+				{{ block "headerTitle" . }}
+				<div class="title_1941_Wrap">
+					<div class="title_1941">1941 Files</div>
+					<div class="title_1941_Go">Go</div>
+				</div>
+				{{ end }}
+				<div class="version_1941">{{ .Version }}</div>
+			</header>
+			{{ block "content" . }}{{ end }}
+		</div>
+		{{ block "scripts" . }}{{ end }}
+	</body>
+</html>
+{{ end }}

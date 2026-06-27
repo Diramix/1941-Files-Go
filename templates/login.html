@@ -1,32 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+{{ define "lang" }}en{{ end }} {{ define "title" }}Login{{ end }} {{ define
+"styles" }}
+<link rel="stylesheet" href="/static/css/login/login.css" />
+{{ end }} {{ define "headerTitle" }}
+<div class="title_1941">Login</div>
+{{ end }} {{ define "content" }}
+<form method="POST">
+	<input type="hidden" name="csrf_token" value="{{ .CSRF }}" />
+	<label for="username">Username:</label>
+	<input type="text" id="username" name="username" required />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/color-scheme.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login/login.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login/login_mobile.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='icons/1941.ico') }}" type="image/x-icon">
-    <title>Login</title>
-</head>
+	<label for="password">Password:</label>
+	<input type="password" id="password" name="password" required />
 
-<body>
-    <div class="wrapper">
-        <header>
-            <img src="/static/icons/logo.ico" class="icon_1941">
-            <div class="title_1941">Login</div>
-        </header>
-        <form method="POST">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required><br><br>
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br><br>
-
-            <input type="submit" value="Login">
-        </form>
-    </div>
-</body>
-
-</html>
+	<input type="submit" value="Login" />
+</form>
+{{ end }}

@@ -1,2 +1,2 @@
 ### Diramix local-server
-Сервер с веб интерфейсом который позволяет загружать файлы на него.
+A server with a web interface that lets you upload files to it.

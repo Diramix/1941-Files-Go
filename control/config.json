@@ -1,5 +1,8 @@
 {
-    "nosecure": false,
-    "port": 1941,
-    "directory": "{home}"
+	"nosecure": false,
+	"port": 1941,
+	"directory": "{home}",
+	"host": "0.0.0.0",
+	"max_upload_mb": 1024,
+	"trust_proxy": false
 }
