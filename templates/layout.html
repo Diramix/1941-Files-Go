@@ -15,12 +15,26 @@
 	<body>
 		<div class="wrapper">
 			<header>
-				<img src="/static/icons/logo.ico" class="icon_1941" />
+				<div class="header_left">
+					<img
+						src="/static/icons/logo.ico"
+						class="icon_1941{{ if .LoggedIn }} icon_toggle{{ end }}"
+						{{ if .LoggedIn }}id="logoToggle" title="Switch between private and public"{{ end }}
+					/>
+					{{ if .LoggedIn }}
+					<span class="mode_dot" id="modeDot"></span>
+					{{ end }}
+				</div>
 				{{ block "headerTitle" . }}
 				<div class="title_1941_Wrap">
 					<div class="title_1941">1941 Files</div>
 					<div class="title_1941_Go">Go</div>
 				</div>
+				{{ end }}
+				{{ if .LoggedIn }}
+				<a class="header_logout" href="/logout" title="{{ .Email }}">Logout</a>
+				{{ else }}
+				<button class="header_login" id="loginBtn" type="button">Login</button>
 				{{ end }}
 				<div class="version_1941">{{ .Version }}</div>
 			</header>

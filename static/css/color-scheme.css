@@ -1,28 +1,28 @@
 @media (prefers-color-scheme: dark) {
-  :root {
-    --main-background: #000000;
-    --light-element: #0c0c0e;
-    --dropxout: #0000;
-    --button-bg: #171719;
-    --accent: #2bfef5;
-    --border: #28282b;
-    --text-primary: #fff;
-    --text-on-accent: #000;
-    --text-muted: rgba(255, 255, 255, 0.45);
-    --text-disabled: #888;
-  }
+	:root {
+		--main-background: #000000;
+		--light-element: #0c0c0e;
+		--dropxout: #0000;
+		--button-bg: #171719;
+		--accent: #2bfef5;
+		--border: #28282b;
+		--text-primary: #fff;
+		--text-on-accent: #000;
+		--text-muted: rgba(255, 255, 255, 0.45);
+		--text-disabled: #888;
+	}
 }
 @media (prefers-color-scheme: light) {
-  :root {
-    --main-background: #ffffff;
-    --light-element: #f1f1f4;
-    --dropxout: #0000;
-    --button-bg: #e7e7ea;
-    --accent: #00c9c0;
-    --border: #d4d4d8;
-    --text-primary: #000;
-    --text-on-accent: #000;
-    --text-muted: rgba(0, 0, 0, 0.45);
-    --text-disabled: #888;
-  }
+	:root {
+		--main-background: #ffffff;
+		--light-element: #f1f1f4;
+		--dropxout: #0000;
+		--button-bg: #e7e7ea;
+		--accent: #00c9c0;
+		--border: #d4d4d8;
+		--text-primary: #000;
+		--text-on-accent: #000;
+		--text-muted: rgba(0, 0, 0, 0.45);
+		--text-disabled: #888;
+	}
 }

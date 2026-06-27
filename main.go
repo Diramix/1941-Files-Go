@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"embed"
 	"fmt"
@@ -14,12 +15,14 @@ import (
 	"path/filepath"
 	"runtime/debug"
 	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
 	"github.com/Diramix/1941-files/internal/auth"
 	"github.com/Diramix/1941-files/internal/config"
 	"github.com/Diramix/1941-files/internal/handlers"
+	"github.com/Diramix/1941-files/internal/store"
 )
 
 //go:embed templates/*.html
@@ -28,13 +31,8 @@ var templatesFS embed.FS
 //go:embed static
 var staticFS embed.FS
 
-// version is set at build time via -ldflags "-X main.version=...".
-// When unset (e.g. `go run .` during development), it falls back to the
-// VCS commit recorded by the Go toolchain.
 var version = "dev"
 
-// resolveVersion returns the build-time version, or "dev-<short commit>" when
-// running an unversioned build and the commit hash is available.
 func resolveVersion() string {
 	if version != "dev" {
 		return version
@@ -53,6 +51,81 @@ func resolveVersion() string {
 		}
 	}
 	return version
+}
+
+func hasFlag(names ...string) bool {
+	for _, a := range os.Args[1:] {
+		for _, n := range names {
+			if a == n {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func offerLegacyMigration(dir, publicDir string, autoYes bool) error {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return err
+	}
+	var stray []string
+	for _, e := range entries {
+		name := e.Name()
+		if name == "db" || name == "files" {
+			continue
+		}
+		if e.Type().IsRegular() {
+			stray = append(stray, name)
+		}
+	}
+	if len(stray) == 0 {
+		return nil
+	}
+
+	fmt.Printf("\nFound %d file(s) from an old version in %s:\n", len(stray), dir)
+	for _, n := range stray {
+		fmt.Printf("  - %s\n", n)
+	}
+
+	if !autoYes && !confirm("Migrate these files into the public folder? [y/N]: ") {
+		fmt.Println("Migration skipped. Re-run with --migrate to migrate later.")
+		return nil
+	}
+
+	migrated := 0
+	for _, name := range stray {
+		src := filepath.Join(dir, name)
+		dst := filepath.Join(publicDir, name)
+		if _, err := os.Stat(dst); err == nil {
+			log.Printf("legacy migration: %q already exists in public, skipping", name)
+			continue
+		}
+		if err := os.Rename(src, dst); err != nil {
+			log.Printf("legacy migration: cannot move %q: %v", name, err)
+			continue
+		}
+		migrated++
+	}
+	fmt.Printf("Migrated %d file(s) into the public folder.\n", migrated)
+	return nil
+}
+
+func confirm(prompt string) bool {
+	if fi, err := os.Stdin.Stat(); err != nil || fi.Mode()&os.ModeCharDevice == 0 {
+		return false
+	}
+	fmt.Print(prompt)
+	line, err := bufio.NewReader(os.Stdin).ReadString('\n')
+	if err != nil {
+		return false
+	}
+	switch strings.ToLower(strings.TrimSpace(line)) {
+	case "y", "yes":
+		return true
+	default:
+		return false
+	}
 }
 
 func main() {
@@ -86,25 +159,32 @@ func main() {
 	if err != nil {
 		log.Fatalf("cannot resolve directory: %v", err)
 	}
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		log.Fatalf("cannot create directory: %v", err)
+	dbDir := filepath.Join(dir, "db")
+	filesDir := filepath.Join(dir, "files")
+	publicDir := filepath.Join(filesDir, "public")
+	for _, d := range []string{dir, dbDir, filesDir, publicDir} {
+		if err := os.MkdirAll(d, 0o755); err != nil {
+			log.Fatalf("cannot create directory %s: %v", d, err)
+		}
 	}
 
-	authMgr, err := auth.New(
-		filepath.Join(controlDir, "users.json"),
-		filepath.Join(controlDir, "ip-whitelist.txt"),
-		filepath.Join(controlDir, "ip-banlist.txt"),
-		filepath.Join(controlDir, "secret.key"),
-		cfg.TrustProxy,
-	)
+	st, err := store.Open(filepath.Join(dbDir, "files.db"))
+	if err != nil {
+		log.Fatalf("cannot open database: %v", err)
+	}
+	defer st.Close()
+
+	autoMigrate := hasFlag("--migrate", "-m")
+	if err := offerLegacyMigration(dir, publicDir, autoMigrate); err != nil {
+		log.Printf("legacy migration: %v", err)
+	}
+
+	authMgr, err := auth.New(st, filepath.Join(controlDir, "secret.key"), cfg.TrustProxy)
 	if err != nil {
 		log.Fatalf("cannot init auth: %v", err)
 	}
 
-	// Each page is parsed together with the shared layout into its own
-	// template set, so pages can redefine the same block names without
-	// colliding. Rendering executes the "layout" entry point.
-	pages := []string{"login.html", "files.html", "ban.html"}
+	pages := []string{"files.html", "ban.html"}
 	tmpls := make(map[string]*template.Template, len(pages))
 	for _, page := range pages {
 		t, err := template.ParseFS(templatesFS, "templates/layout.html", "templates/"+page)
@@ -120,7 +200,24 @@ func main() {
 	}
 	staticHandler := http.StripPrefix("/static/", http.FileServer(http.FS(staticSub)))
 
-	srv := &handlers.Server{Cfg: cfg, Auth: authMgr, Dir: dir, Templates: tmpls, Version: version}
+	srv := &handlers.Server{Cfg: cfg, Auth: authMgr, Store: st, Dir: dir, Templates: tmpls, Version: version}
+
+	go func() {
+		purge := func() {
+			cutoff := time.Now().Add(-14 * 24 * time.Hour).Unix()
+			if n, err := srv.PurgeEmptyOldAccounts(cutoff); err != nil {
+				log.Printf("account cleanup error: %v", err)
+			} else if n > 0 {
+				log.Printf("account cleanup: removed %d empty account(s)", n)
+			}
+		}
+		purge()
+		ticker := time.NewTicker(6 * time.Hour)
+		defer ticker.Stop()
+		for range ticker.C {
+			purge()
+		}
+	}()
 
 	addr := net.JoinHostPort(cfg.Host, strconv.Itoa(cfg.Port))
 	httpServer := &http.Server{

@@ -11,7 +11,6 @@ import (
 const FilesFolderName = "1941 Files"
 
 type Config struct {
-	NoSecure    bool   `json:"nosecure"`
 	Port        int    `json:"port"`
 	Directory   string `json:"directory"`
 	Host        string `json:"host"`

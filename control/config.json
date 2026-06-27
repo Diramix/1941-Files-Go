@@ -1,5 +1,4 @@
 {
-	"nosecure": false,
 	"port": 1941,
 	"directory": "{home}",
 	"host": "0.0.0.0",
