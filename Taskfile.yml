@@ -10,8 +10,6 @@ vars:
 tasks:
     run:
         desc: Run the server (go run .)
-        env:
-            CGO_ENABLED: "1"
         cmds:
             - go run -ldflags "{{.LDFLAGS}}" .
 
@@ -31,11 +29,10 @@ tasks:
         vars:
             NAME: "{{.BINARY}}-{{.VERSION}}-windows-amd64"
             STAGE: "{{.DIST}}/{{.BINARY}}-{{.VERSION}}-windows-amd64"
-            CC: '{{.CC | default "x86_64-w64-mingw32-gcc"}}'
         cmds:
             - rm -rf {{.STAGE}}
             - mkdir -p {{.STAGE}}
-            - CGO_ENABLED=1 CC={{.CC}} GOOS=windows GOARCH=amd64 go build -ldflags "{{.LDFLAGS}}" -o {{.STAGE}}/{{.BINARY}}.exe .
+            - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags "{{.LDFLAGS}}" -o {{.STAGE}}/{{.BINARY}}.exe .
             - cp -r control {{.STAGE}}/control
             - rm -f {{.STAGE}}/control/secret.key
             - cd {{.DIST}} && zip -r {{.NAME}}.zip {{.NAME}}
@@ -49,7 +46,7 @@ tasks:
         cmds:
             - rm -rf {{.STAGE}}
             - mkdir -p {{.STAGE}}
-            - CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags "{{.LDFLAGS}}" -o {{.STAGE}}/{{.BINARY}} .
+            - CGO_ENABLED=0 go build -ldflags "{{.LDFLAGS}}" -o {{.STAGE}}/{{.BINARY}} .
             - cp -r control {{.STAGE}}/control
             - rm -f {{.STAGE}}/control/secret.key
             - cd {{.DIST}} && tar -czf {{.NAME}}.tar.gz {{.NAME}}
