@@ -1,7 +1,7 @@
 {{ define "lang" }}en{{ end }} {{ define "title" }}1941 Files Go{{ end }} {{
 define "styles" }}
-<link rel="stylesheet" href="/static/css/files/files.css" />
-<link rel="stylesheet" href="/static/css/files/files_mobile.css" />
+<link rel="stylesheet" href="/static/pages/files/styles.css" />
+<link rel="stylesheet" href="/static/pages/files/styles.mobile.css" />
 {{ end }} {{ define "content" }}
 <div class="main_container" data-logged-in="{{ if .LoggedIn }}1{{ else }}0{{ end }}">
 	<div class="upload_pane">
@@ -83,5 +83,5 @@ define "styles" }}
 	</span>
 </div>
 {{ end }} {{ define "scripts" }}
-<script src="/static/js/files/script.js"></script>
+<script src="/static/pages/files/script.js"></script>
 {{ end }}

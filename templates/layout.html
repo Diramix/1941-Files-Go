@@ -4,11 +4,11 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="/static/css/color-scheme.css" />
-		<link rel="stylesheet" href="/static/css/fonts.css" />
-		<link rel="stylesheet" href="/static/css/base.css" />
+		<link rel="stylesheet" href="/static/core/color-scheme.css" />
+		<link rel="stylesheet" href="/static/core/fonts.css" />
+		<link rel="stylesheet" href="/static/core/base.css" />
 		{{ block "styles" . }}{{ end }}
-		<link rel="icon" href="/static/icons/1941.ico" type="image/x-icon" />
+		<link rel="icon" href="/static/core/icons/1941.ico" type="image/x-icon" />
 		<title>{{ block "title" . }}1941 Files{{ end }}</title>
 	</head>
 
@@ -17,7 +17,7 @@
 			<header>
 				<div class="header_left">
 					<img
-						src="/static/icons/logo.ico"
+						src="/static/core/icons/logo.ico"
 						class="icon_1941{{ if .LoggedIn }} icon_toggle{{ end }}"
 						{{ if .LoggedIn }}id="logoToggle" title="Switch between private and public"{{ end }}
 					/>

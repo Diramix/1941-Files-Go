@@ -1,5 +1,5 @@
 body {
-	background-image: url("/static/img/ban/bg.png");
+	background-image: url("/static/pages/ban/assets/bg.png");
 	background-size: 40vh;
 	background-position: right bottom;
 	background-repeat: no-repeat;
@@ -16,7 +16,7 @@ body {
 
 .ban_gif {
 	border-radius: 10px;
-	background-image: url("/static/img/ban/ban.gif");
+	background-image: url("/static/pages/ban/assets/ban.gif");
 	background-size: cover;
 	background-position: center;
 	width: 85vh;
