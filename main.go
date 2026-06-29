@@ -3,10 +3,8 @@ package main
 import (
 	"bufio"
 	"context"
-	"embed"
 	"fmt"
 	"html/template"
-	"io/fs"
 	"log"
 	"net"
 	"net/http"
@@ -24,12 +22,6 @@ import (
 	"github.com/Diramix/1941-files/internal/handlers"
 	"github.com/Diramix/1941-files/internal/store"
 )
-
-//go:embed templates/*.html
-var templatesFS embed.FS
-
-//go:embed static
-var staticFS embed.FS
 
 var version = "dev"
 
@@ -184,21 +176,26 @@ func main() {
 		log.Fatalf("cannot init auth: %v", err)
 	}
 
+	templatesDir := filepath.Join(baseDir, "templates")
+	staticDir := filepath.Join(baseDir, "static")
+	if _, err := os.Stat(templatesDir); err != nil {
+		log.Fatalf("cannot find templates directory next to the executable (%s): %v", templatesDir, err)
+	}
+	if _, err := os.Stat(staticDir); err != nil {
+		log.Fatalf("cannot find static directory next to the executable (%s): %v", staticDir, err)
+	}
+
 	pages := []string{"files.html", "ban.html"}
 	tmpls := make(map[string]*template.Template, len(pages))
 	for _, page := range pages {
-		t, err := template.ParseFS(templatesFS, "templates/layout.html", "templates/"+page)
+		t, err := template.ParseFiles(filepath.Join(templatesDir, "layout.html"), filepath.Join(templatesDir, page))
 		if err != nil {
 			log.Fatalf("cannot parse template %s: %v", page, err)
 		}
 		tmpls[page] = t
 	}
 
-	staticSub, err := fs.Sub(staticFS, "static")
-	if err != nil {
-		log.Fatalf("cannot mount static: %v", err)
-	}
-	staticHandler := http.StripPrefix("/static/", http.FileServer(http.FS(staticSub)))
+	staticHandler := http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir)))
 
 	srv := &handlers.Server{Cfg: cfg, Auth: authMgr, Store: st, Dir: dir, Templates: tmpls, Version: version}
 

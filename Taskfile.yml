@@ -34,6 +34,8 @@ tasks:
             - mkdir -p {{.STAGE}}
             - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags "{{.LDFLAGS}}" -o {{.STAGE}}/{{.BINARY}}.exe .
             - cp -r control {{.STAGE}}/control
+            - cp -r templates {{.STAGE}}/templates
+            - cp -r static {{.STAGE}}/static
             - rm -f {{.STAGE}}/control/secret.key
             - cd {{.DIST}} && zip -r {{.NAME}}.zip {{.NAME}}
             - rm -rf {{.STAGE}}
@@ -48,6 +50,8 @@ tasks:
             - mkdir -p {{.STAGE}}
             - CGO_ENABLED=0 go build -ldflags "{{.LDFLAGS}}" -o {{.STAGE}}/{{.BINARY}} .
             - cp -r control {{.STAGE}}/control
+            - cp -r templates {{.STAGE}}/templates
+            - cp -r static {{.STAGE}}/static
             - rm -f {{.STAGE}}/control/secret.key
             - cd {{.DIST}} && tar -czf {{.NAME}}.tar.gz {{.NAME}}
             - rm -rf {{.STAGE}}
