@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Diramix/1941-files/internal/store"
+	"github.com/Diramix/1941-Files-Go/internal/store"
 )
 
 func newTestManager(t *testing.T) *Manager {

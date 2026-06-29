@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Diramix/1941-files/internal/auth"
-	"github.com/Diramix/1941-files/internal/store"
+	"github.com/Diramix/1941-Files-Go/internal/auth"
+	"github.com/Diramix/1941-Files-Go/internal/store"
 )
 
 func TestPrivateFileRequiresTokenForAnonymous(t *testing.T) {

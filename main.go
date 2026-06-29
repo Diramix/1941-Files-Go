@@ -17,10 +17,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Diramix/1941-files/internal/auth"
-	"github.com/Diramix/1941-files/internal/config"
-	"github.com/Diramix/1941-files/internal/handlers"
-	"github.com/Diramix/1941-files/internal/store"
+	"github.com/Diramix/1941-Files-Go/internal/auth"
+	"github.com/Diramix/1941-Files-Go/internal/config"
+	"github.com/Diramix/1941-Files-Go/internal/handlers"
+	"github.com/Diramix/1941-Files-Go/internal/store"
 )
 
 var version = "dev"
@@ -223,7 +223,7 @@ func main() {
 		ReadHeaderTimeout: 10 * time.Second,
 	}
 
-	fmt.Printf("1941-files %s\n", version)
+	fmt.Printf("1941-Files-Go %s\n", version)
 	fmt.Printf("Serving files from: %s\n", dir)
 	fmt.Printf("Serving at http://%s\n", addr)
 

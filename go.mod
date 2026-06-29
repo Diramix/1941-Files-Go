@@ -1,4 +1,4 @@
-module github.com/Diramix/1941-files
+module github.com/Diramix/1941-Files-Go
 
 go 1.25.0
 
